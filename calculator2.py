@@ -5,7 +5,6 @@ Created on Mon Feb 17 10:03:57 2020
 @author: User
 """
 
-import math
 
 #var_num = input('Enter element count: ')
 #op_num = 0

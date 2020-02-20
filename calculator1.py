@@ -14,10 +14,9 @@ def ex():
     elif q_a == 'N':
         print('Exit. ')        
         sys.exit
+    else:
+        ex()  
 
-#    else:
-#        print('Keyword error.')
-#        ex()
 
 def error():
     print('Error. Try again?')
@@ -28,6 +27,7 @@ def error():
     elif answer == 'N':
         print('Exit. ')        
         sys.exit
+      
         
         
 def calculator1():
@@ -37,34 +37,33 @@ def calculator1():
     try:
         a = float(a)
     except ValueError as e:
-        print('Error')
-    
+        error()    
     else:
         b = input('Second number: ')
         try:
             b = float(b)
-        except ValueError:
-            print('Error')
+        except ValueError as e:
+            error()
         else:
             c = input('Opertor (+, -, *, /): ')
-                
-            while c not in op:
-                print('Uknown operation. Try again. ')
-                c = input('Opertor (+, -, *, /): ')
-            
-            if c == '+':
-                print(a + b)
-            elif c == '-':
-                print(a - b)
-            elif c == '*':
-                print(a * b)
-            elif c == '/':
-                try:
-                    print(a / b)
-                except ZeroDivisionError:
-                    print('ZeroDivisionError')
+            try:
+                c in op
+            except ValueError as e:
+                error()
+            else:
+                if c == '+':
+                    print(round((a + b),2))
+                elif c == '-':
+                    print(round((a - b),2))
+                elif c == '*':
+                    print(round((a * b),2))
+                elif c == '/':
+                    try:
+                        print(round((a / b),2))
+                    except ZeroDivisionError:
+                        print('ZeroDivisionError')
 
-    ex() 
+                ex() 
                     
 calculator1()
                     
