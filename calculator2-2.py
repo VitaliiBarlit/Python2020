@@ -18,7 +18,7 @@ def count():
             return int(var_num)
 
 #x = count()
-#
+
 #def num_type(i:int):
 #    a = input('Enter var{} : '.format(i + 1))
 #    try:
@@ -27,8 +27,8 @@ def count():
 #        print('Error.')
 #    else:
 #        return float(a)
-#        
-#
+
+
 #def num_n(n:int,x:list):
 #    j = 0
 #    while j < n:
@@ -104,27 +104,30 @@ def count():
 
 
 
-x=[]
-amount=int(input("How many numbers?"))
-operation=input("(*), (/), (+), (-)")
+x = []
+y = []
+amount=int(input('How many numbers? '))
+operation=input('(*), (/), (+), (-)')
 previous1 = 0
 previous2=1
 for i in range(amount):
-    number=int(input("Number: "))
+    number=int(input('Number: '))
+#    operator = input('Operator: ')
     x.append(number)
-if operation == "+":
+#    y.append(operator)
+if operation == '+':
     for i in range(amount):
         previous1=x[i]+previous1
-elif operation == "*":
+elif operation == '*':
     for i in range(amount):
         previous2=x[i]*previous2
-elif operation == "-":
+elif operation == '-':
     for i in range(amount):
         previous1=x[i]-previous1
-elif operation == "/":
+elif operation == '/':
     for i in range(amount):
         previous2=x[i]/previous2
-if operation == "+" or operation == "-":
+if operation == '+' or operation == '-':
     print(previous1)
 else:
     print(previous2)
