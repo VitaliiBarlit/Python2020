@@ -6,13 +6,13 @@ Created on Thu Feb 20 16:26:52 2020
 """
 
 
-import ast,operator,sys
+import ast,operator,sys,math
 
-        
-        
+
+
 def calculator1():
     def ex():
-        q_a = input('Do you want more calculations? (Y/N))? ')
+        q_a = input('Do you want more calculations? (Y/N)? ')
         q_a = q_a.capitalize()
         if q_a == 'Y':
             calculator1()
@@ -32,11 +32,16 @@ def calculator1():
         elif answer == 'N':
             print('Exit. ')        
             sys.exit    
-    op = ['+','-','*','/']
+    op = ['+','-','*','/','**']
     
     a = input('First number: ')
     try:
-        a = float(a)
+        if a == 'e':
+            a =  2.71828
+        elif a == 'pi':
+            a = 3.14159
+        else:
+            a = float(a)
     except ValueError as e:
         error()    
     else:
@@ -46,7 +51,7 @@ def calculator1():
         except ValueError as e:
             error()
         else:
-            c = input('Opertor (+, -, *, /): ')
+            c = input('Opertor (+, -, *, /, **): ')
             try:
                 c in op
             except ValueError as e:
@@ -58,6 +63,8 @@ def calculator1():
                     print(round((a - b),2))
                 elif c == '*':
                     print(round((a * b),2))
+                elif c == '**':
+                    print(round((a ** b),2))                    
                 elif c == '/':
                     try:
                         print(round((a / b),2))
@@ -76,7 +83,7 @@ def calculator1():
 
 def calculator2():
     def ex():
-        q_a = input('Do you want more calculations? (Y/N))? ')
+        q_a = input('Do you want more calculations? (Y/N)? ')
         q_a = q_a.capitalize()
         if q_a == 'Y':
             calculator2()
@@ -85,8 +92,7 @@ def calculator2():
             sys.exit
         else:
             ex()  
-    
-    
+        
     def error():
         print('Error. Try again?')
         answer = input('Y/N ')
@@ -97,7 +103,7 @@ def calculator2():
             sys.exit
     
     srting = input('Enter count elements: ')
-    operator = ['*', '/', '+', '-']
+    operator = ['*', '/', '+', '-', '**']
     
     try:
         integer = int(srting)
@@ -115,7 +121,12 @@ def calculator2():
         if i % 2 == 0:
             i = input('Enter var{}: '.format(int(i/2 + 1)))
             try:
-                full.append(float(i))
+                if i == 'e':
+                    full.append(2.71828)
+                elif i == 'pi':
+                    full.append(3.14159)
+                else:
+                    full.append(float(i))
             except ValueError:
                 error()
         else:
@@ -143,7 +154,11 @@ def calculator2():
                     elif full_1[j] == '/':
                         full_1[j-1] /= full_1.pop(j+1)
                         full_1.pop(j)
-                        return calculator2_1(full_1)    
+                        return calculator2_1(full_1) 
+                    elif full_1[j] == '**':
+                        full_1[j-1] = pow(full_1[j-1],full_1.pop(j+1))
+                        full_1.pop(j)
+                        return calculator2_1(full_1)
             else:
                 return full_1
             
@@ -155,7 +170,7 @@ def calculator2():
                         return calculator2_1(full_1)
                     elif full_1[jj] == '-':
                         full_1[jj-1] -= full_1.pop(jj+1)
-                        full_1.pop(j)
+                        full_1.pop(jj)
                         return calculator2_1(full_1)
             else:
                 return full_1
@@ -176,18 +191,17 @@ def calculator2():
                 elif full_1[k] == '-':
                     full_1[k-1] -= full_1.pop(k+1)
                     full_1.pop(k)
+                    return full_1 
+                elif full_1[k] == '**':
+                    full_1[k-1] = pow(full_1[k-1],full_1.pop(k+1))
+                    full_1.remove(full_1[k])
+                   
                     return full_1
-
 
     solution = calculator2_1(full)
 
     print('Answer: {}'.format(solution[0]))
     return solution, ex()
-#    
-#try:
-#    answer = calculator2()
-#except TypeError:
-#    error()
 
 
 
@@ -200,7 +214,7 @@ def calculator2():
 def calculator3():
     
     def ex():
-        q_a = input('Do you want more calculations? (Y/N))? ')
+        q_a = input('Do you want more calculations? (Y/N)? ')
         q_a = q_a.capitalize()
         if q_a == 'Y':
             calculator3()
@@ -213,7 +227,7 @@ def calculator3():
     
     operators = {ast.Add: operator.add, ast.Sub: operator.sub,
                  ast.Mult: operator.mul, ast.Div: operator.truediv,
-                 ast.Mod: operator.mod,}
+                 ast.Mod: operator.mod,ast.Pow: operator.pow}
     
     def error():
         print('Error. Try again?')
@@ -227,10 +241,20 @@ def calculator3():
             
     string = input('Ask me anything: ')
     try:
+        
+        for j in range(len(string)):
+            if string[j] == 'e' or (string[j] + string[j+1]) == 'pi':
+                string = string.replace('e','2.71828')
+                string = string.replace('pi','3.14159')
+    except IndexError:
+        print('Not enough data.')
+#        error()
+
+
+    try:
         node = ast.parse(string, mode='eval')
     except ValueError:
         error()
-
 
     def calculator3_1(node):
         try:
@@ -243,30 +267,22 @@ def calculator3():
             elif isinstance(node, ast.BinOp):
                 return operators[type(node.op)](calculator3_1(node.left),\
                              calculator3_1(node.right))
-            else:
-                error()
-#                raise Exception('ValueError')
 
         except ZeroDivisionError:
             print('ZeroDivisionError')
         except ValueError:
-            error()
-#        except ValueError:
-#            error()
-            
+            print('ValueError')
+        except UnboundLocalError:
+            print('Error')
+        except Exception as e:
+            print(e)
 
-    try:
-        calculator3_1(node.body)
-    except ValueError:
-        print('-')
-#        error()
-    except UnboundLocalError:
-        print('--')
-#        error()
-    else:
-        print(calculator3_1(node.body))
-        ex()
-#        return calculator3_1(node.body)
+
+
+#    calculator3_1(node.body)
+
+    print(calculator3_1(node.body))
+    ex()
 
 
 
