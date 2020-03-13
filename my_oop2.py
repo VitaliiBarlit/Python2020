@@ -11,20 +11,22 @@ class Terrain:
         self.feature = feature
 #        print('{} is {}.'.format(self.name,self.feature))
 
-class Build(Terrain):
-    def __init__(self, name, feature, area, height):
-        super().__init__(name,feature)
+class Build:
+    def __init__(self, name, top_view, height):
+        self.name = name
+        self.top_view = top_view
         self.height = height
         self.residents = True
     def no_residents(self):
         self.residents = False
 
-class Creatures(Terrain):
-    def __init__(self, name, feature, num_of_people, residence):
-        super().__init__(name,feature)
+class People:
+    def __init__(self, name, num_of_people, residence):
+        self.name = name
         self.num_of_people = num_of_people
         self.residence = residence
-    def info(self):
+    def __str__(self):
+#        return '{} live in {}'.format(self.name, self.residence.lower())
         if self.num_of_people == 1:
             return '{} live in {}'.format(self.name, self.residence.lower())
         else:
@@ -32,17 +34,17 @@ class Creatures(Terrain):
                 self.name.lower(), self.residence.lower())
         
         
+
+
+        
 hill = Terrain('Hill', 'High')
 moat = Terrain('Moat', 'Deep')
 
-wall = Build('Fortress wall','Grey','Around',100)
-gate = Build('Gate','Grey','Rectangle',90)
-gate.no_residents()
+wall = Build('Great wall', 'Ring', 150)
+gate = Build('Steel gate', 'Rectangle', 175)
+outbuildings = Build('Happy outbuildings', 'Boxes', 50)
+keep = Build('High tower', 'Square', 225)
+courtyard = Build('Green courtyard', 'Circle', 0)
+palace = Build('Royal palace', 'Old castle', 200)
 
-keep = Build('Keep', 'High', 'Square', 250)
-palace = Build('Palace', 'Great building', 'Old cacstle', 200)
-
-archers = Creatures('Archers', 'With bow', 20, keep.name)
-king = Creatures('King', 'With scepter', 1, palace.name)
-king_info= king.info() + ' with his family and servants.'
-
+#king = People('King', 1, palace.name)
